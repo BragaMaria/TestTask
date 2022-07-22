@@ -1,33 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-interface IData {
-  item: {
-    id: string;
-    title: string;
-    content: string;
-  };
-}
-
 function App() {
-  const post = [
-    {
-      id: "1",
-      title: "Отдых в июле на Черном море",
-      content: " ",
-    },
-  ];
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    fetch("http://localhost:3005/posts")
+      .then((result) => {
+        return result.json();
+      })
+      .then((result) => {
+        setData(result);
+      });
+  }, []);
+
+  console.log(data)
+
   return (
     <div className="App">
-      <h3>Проект </h3>
-      <div className="post">Блок 1</div>
+      <div className="post">
+        <div className="text">
+          <h3 className="title">1. Заголовок поста</h3>
+          <p className="description">Описание поста</p>
+        </div>
+        <div className="buttons">
+          <input type="button" value="Удалить" />
+          <input type="button" value="Редактировать" />
+        </div>
+      </div>
+
+      <div className="post">
+        <div className="text">
+          <h3 className="title">2. Заголовок поста</h3>
+          <p className="description">Описание поста</p>
+        </div>
+        <div className="buttons">
+          <input type="button" value="Удалить" />
+          <input type="button" value="Редактировать" />
+        </div>
+      </div>
     </div>
   );
 }
-const elems = post.map((elem) => {
-  return <Elem item={elem} />;
-});
-<div>{elems}</div>;
 
 export default App;
