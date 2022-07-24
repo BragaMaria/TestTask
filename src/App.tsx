@@ -11,15 +11,34 @@ interface IData {
 function App() {
   const [data, setData] = useState<IData[]>();
 
+  const getData = () => {
+    return fetch("http://localhost:3005/posts").then((result) => {
+      return result.json();
+    });
+  };
+
+  
   useEffect(() => {
-    fetch("http://localhost:3005/posts")
+    getData().then((result) => {
+      setData(result);
+    });
+  }, []);
+
+  
+  const remove = (id: number) => {
+    fetch(`http://localhost:3005/posts/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
       .then((result) => {
         return result.json();
       })
-      .then((result) => {
-        setData(result);
+      .then(() => {
+        getData().then((result) => {
+          setData(result);
+        });
       });
-  }, []);
+  };
 
   return (
     <div className="App">
@@ -33,7 +52,7 @@ function App() {
               <p className="description">{post.description}</p>
             </div>
             <div className="buttons">
-              <input type="button" value="Удалить" />
+              <input type="button" value="Удалить" onClick={()=>{remove(post.id)}}/>
               <input type="button" value="Редактировать" />
             </div>
           </div>
