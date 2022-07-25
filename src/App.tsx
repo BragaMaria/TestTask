@@ -58,6 +58,10 @@ function App() {
           </div>
         );
       })}
+      <input className="edit" type="text" />
+      <input className="edit" type="text" />
+      <input className="edit_button" type="button" value="Редактировать пост"/>
+
     </div>
   );
 }
