@@ -22,21 +22,30 @@
   border: 2px solid #00ffff;
 }
 
-.edit_button {
+.edit-button {
   display: flex;
   margin: auto;
   width: 140px;
-  height: 30px;
-  position: absolute;
-  border: 2px solid #00ffff;
-  left: 198px;
   color: #008080;
+  height: 30px;
+  border: 2px solid #00ffff;
+  
 }
 
-.edit_button:hover {
+.edit-button:hover {
   border: 2px solid #008080;
 }
 
-.edit_button:active {
+.edit-button:active {
   background-color: #00ffff;
+}
+
+.form-edit{
+ padding: 15px;
+ background-color: #D3D3D3;
+ border-radius: 20px;
+ position: fixed;
+ left: calc(50% - 265px);
+ top: calc(50% - 75px);
+
 }
