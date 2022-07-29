@@ -62,6 +62,7 @@
   position: fixed;
   left: calc(50% - 265px);
   top: calc(50% - 255px);
+  padding-top: 40px;
 }
 
 

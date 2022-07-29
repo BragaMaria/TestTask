@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import { NavLink } from "react-router-dom";
+
 
 interface IData {
   id: number;
@@ -17,6 +19,8 @@ function App() {
   });
 
   const [openForm, setOpenForm] = useState(false);
+
+  const [openForm2, setOpenForm2] = useState(false);
 
   const [idForm, setIdForm] = useState(0);
 
@@ -85,6 +89,7 @@ function App() {
           setData(result);
         });
       });
+    setOpenForm2(false);
   };
 
   return (
@@ -94,19 +99,24 @@ function App() {
         type="submit"
         value="Создать пост"
         onClick={() => {
-          setOpenForm(true);
+          setOpenForm2(true);
         }}
       />
 
       {data?.map((post) => {
         return (
           <div className="post" key={post.id}>
-            <div className="text">
-              <h3 className="title">
-                {post.id}. {post.title}
-              </h3>
-              <p className="description">{post.description}</p>
-            </div>
+            <NavLink
+              to={`/posts/${post.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <div className="text">
+                <h3 className="title">
+                  {post.id}. {post.title}
+                </h3>
+                <p className="description">{post.description}</p>
+              </div>
+            </NavLink>
             <div className="buttons">
               <input
                 type="button"
@@ -171,40 +181,45 @@ function App() {
         </div>
       )}
 
-      {openForm && (
-        <div className="form-create">
-          <form
-            onSubmit={(e) => {
-              create(e);
-            }}
-          >
-            <input
-              className="create"
-              type="text"
-              onChange={(e) => {
-                setBodyCreate({
-                  title: e.target.value,
-                  description: e.target.value,
-                });
+      {openForm2 && (
+        <div className="popup-fade">
+          <div className="form-create popup">
+            <a className="popup-close" onClick={() => setOpenForm2(false)}>
+              Закрыть
+            </a>
+            <form
+              onSubmit={(e) => {
+                create(e);
               }}
-            />
+            >
+              <input
+                className="create"
+                type="text"
+                onChange={(e) => {
+                  setBodyCreate({
+                    title: e.target.value,
+                    description: bodyCreate.description,
+                  });
+                }}
+              />
 
-            <input
-              className="create"
-              type="text"
-              onChange={(e) => {
-                setBodyCreate({
-                  title: e.target.value,
-                  description: e.target.value,
-                });
-              }}
-            />
-            <input
-              className="create-button"
-              type="submit"
-              value="Создать пост"
-            />
-          </form>
+              <input
+                className="create"
+                type="text"
+                onChange={(e) => {
+                  setBodyCreate({
+                    title: bodyCreate.title,
+                    description: e.target.value,
+                  });
+                }}
+              />
+              <input
+                className="create-button"
+                type="submit"
+                value="Создать пост"
+              />
+            </form>
+          </div>
         </div>
       )}
     </div>
