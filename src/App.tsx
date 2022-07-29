@@ -67,6 +67,7 @@ function App() {
           setData(result);
         });
       });
+    setOpenForm(false);
   };
 
   const create = (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,79 +98,76 @@ function App() {
         }}
       />
 
-      <div className="popup-fade">
-        {/* <div className="popup">
-          <a className="popup-close" href="#">
-            Закрыть
-          </a>
-          <p>Форма для заполнения</p>
-        </div> */}
-        {data?.map((post) => {
-          return (
-            <div className="post" key={post.id}>
-              <div className="text">
-                <h3 className="title">
-                  {post.id}. {post.title}
-                </h3>
-                <p className="description">{post.description}</p>
-              </div>
-              <div className="buttons">
-                <input
-                  type="button"
-                  value="Удалить"
-                  onClick={() => {
-                    remove(post.id);
-                  }}
-                />
-                <input
-                  type="button"
-                  value="Редактировать"
-                  onClick={() => {
-                    setOpenForm(true);
-                    setIdForm(post.id);
-                  }}
-                />
-              </div>
+      {data?.map((post) => {
+        return (
+          <div className="post" key={post.id}>
+            <div className="text">
+              <h3 className="title">
+                {post.id}. {post.title}
+              </h3>
+              <p className="description">{post.description}</p>
             </div>
-          );
-        })}
-        /
-      </div>
+            <div className="buttons">
+              <input
+                type="button"
+                value="Удалить"
+                onClick={() => {
+                  remove(post.id);
+                }}
+              />
+              <input
+                type="button"
+                value="Редактировать"
+                onClick={() => {
+                  setOpenForm(true);
+                  setIdForm(post.id);
+                }}
+              />
+            </div>
+          </div>
+        );
+      })}
+
       {openForm && (
-        <div className="form-edit">
-          <form
-            onSubmit={(e) => {
-              edit(idForm, e);
-            }}
-          >
-            <input
-              className="edit"
-              type="text"
-              onChange={(e) => {
-                setBodyEdit({
-                  title: e.target.value,
-                  description: bodyEdit.description,
-                });
+        <div className="popup-fade">
+          <div className="form-edit popup">
+            <a className="popup-close" onClick={() => setOpenForm(false)}>
+              Закрыть
+            </a>
+            <form
+              onSubmit={(e) => {
+                edit(idForm, e);
               }}
-            />
+            >
+              <input
+                className="edit"
+                type="text"
+                onChange={(e) => {
+                  setBodyEdit({
+                    title: e.target.value,
+                    description: bodyEdit.description,
+                  });
+                }}
+              />
 
-            <input
-              className="edit"
-              type="text"
-              onChange={(e) => {
-                setBodyEdit({
-                  title: bodyEdit.title,
-                  description: e.target.value,
-                });
-              }}
-            />
+              <input
+                className="edit"
+                type="text"
+                onChange={(e) => {
+                  setBodyEdit({
+                    title: bodyEdit.title,
+                    description: e.target.value,
+                  });
+                }}
+              />
 
-            <input
-              className="edit-button"
-              type="submit"
-              value="Редактировать пост"
-            />
-          </form>
+              <input
+                className="edit-button"
+                type="submit"
+                value="Редактировать пост"
+              />
+            </form>
+          </div>
         </div>
       )}
 
@@ -201,7 +199,11 @@ function App() {
                 });
               }}
             />
-            <input className="create-button" type="submit" value="Создать пост"/>
+            <input
+              className="create-button"
+              type="submit"
+              value="Создать пост"
+            />
           </form>
         </div>
       )}
