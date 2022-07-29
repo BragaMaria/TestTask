@@ -16,7 +16,7 @@ function App() {
     description: "",
   });
 
-  const [openForm, setOpenForm] = useState(false);
+  const [openForm, setOpenForm] = useState(true);
 
   const [idForm, setIdForm] = useState(0);
 
@@ -25,6 +25,11 @@ function App() {
       return result.json();
     });
   };
+
+  const [bodyCreate, setBodyCreate] = useState({
+    title: "",
+    description: "",
+  });
 
   useEffect(() => {
     getData().then((result) => {
@@ -64,39 +69,71 @@ function App() {
       });
   };
 
+  const create = (id: number, e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    fetch(`http://localhost:3005/posts/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bodyCreate),
+    })
+      .then((result) => {
+        return result.json();
+      })
+      .then(() => {
+        getData().then((result) => {
+          setData(result);
+        });
+      });
+  };
+
   return (
     <div className="App">
-      {data?.map((post) => {
-        return (
-          <div className="post" key={post.id}>
-            <div className="text">
-              <h3 className="title">
-                {post.id}. {post.title}
-              </h3>
-              <p className="description">{post.description}</p>
-            </div>
-            <div className="buttons">
-              <input
-                type="button"
-                value="Удалить"
-                onClick={() => {
-                  remove(post.id);
-                }}
-              />
-              <input
-                type="button"
-                value="Редактировать"
-                onClick={() => {
-                  setOpenForm(true);
-                  setIdForm(post.id);
-                }}
-              />
-            </div>
-          </div>
-        );
-      })}
+      <input className="create-button" type="submit" value="Создать пост" />
 
       
+      
+      <div className="popup-fade">
+        <div className="popup">
+          <a className="popup-close" href="#">
+            Закрыть
+          </a>
+          <p>////////////</p>
+        </div>
+
+
+
+
+        {data?.map((post) => {
+          return (
+            <div className="post" key={post.id}>
+              <div className="text">
+                <h3 className="title">
+                  {post.id}. {post.title}
+                </h3>
+                <p className="description">{post.description}</p>
+              </div>
+              <div className="buttons">
+                <input
+                  type="button"
+                  value="Удалить"
+                  onClick={() => {
+                    remove(post.id);
+                  }}
+                />
+                <input
+                  type="button"
+                  value="Редактировать"
+                  onClick={() => {
+                    setOpenForm(true);
+                    setIdForm(post.id);
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+        /
+      </div>
       {openForm && (
         <div className="form-edit">
           <form
@@ -130,6 +167,43 @@ function App() {
               className="edit-button"
               type="submit"
               value="Редактировать пост"
+            />
+          </form>
+        </div>
+      )}
+
+      {openForm && (
+        <div className="form-create">
+          <form
+            onSubmit={(e) => {
+              create(idForm, e);
+            }}
+          >
+            <input
+              className="create"
+              type="text"
+              onChange={(e) => {
+                setBodyCreate({
+                  title: e.target.value,
+                  description: e.target.value,
+                });
+              }}
+            />
+
+            <input
+              className="create"
+              type="text"
+              onChange={(e) => {
+                setBodyCreate({
+                  title: e.target.value,
+                  description: e.target.value,
+                });
+              }}
+            />
+            <input
+              className="create-button"
+              type="submit"
+              value="Создать пост"
             />
           </form>
         </div>

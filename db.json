@@ -2,8 +2,8 @@
   "posts": [
     {
       "id": 1,
-      "title": "Заголовок поста",
-      "description": "Описание поста"
+      "title": "",
+      "description": ""
     },
     {
       "id": 2,
