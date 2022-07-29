@@ -16,7 +16,7 @@ function App() {
     description: "",
   });
 
-  const [openForm, setOpenForm] = useState(true);
+  const [openForm, setOpenForm] = useState(false);
 
   const [idForm, setIdForm] = useState(0);
 
@@ -69,10 +69,10 @@ function App() {
       });
   };
 
-  const create = (id: number, e: React.FormEvent<HTMLFormElement>) => {
+  const create = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch(`http://localhost:3005/posts/${id}`, {
-      method: "PUT",
+    fetch(`http://localhost:3005/posts/`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(bodyCreate),
     })
@@ -88,21 +88,22 @@ function App() {
 
   return (
     <div className="App">
-      <input className="create-button" type="submit" value="Создать пост" />
+      <input
+        className="create-button"
+        type="submit"
+        value="Создать пост"
+        onClick={() => {
+          setOpenForm(true);
+        }}
+      />
 
-      
-      
       <div className="popup-fade">
-        <div className="popup">
+        {/* <div className="popup">
           <a className="popup-close" href="#">
             Закрыть
           </a>
-          <p>////////////</p>
-        </div>
-
-
-
-
+          <p>Форма для заполнения</p>
+        </div> */}
         {data?.map((post) => {
           return (
             <div className="post" key={post.id}>
@@ -176,7 +177,7 @@ function App() {
         <div className="form-create">
           <form
             onSubmit={(e) => {
-              create(idForm, e);
+              create(e);
             }}
           >
             <input
@@ -200,11 +201,7 @@ function App() {
                 });
               }}
             />
-            <input
-              className="create-button"
-              type="submit"
-              value="Создать пост"
-            />
+            <input className="create-button" type="submit" value="Создать пост"/>
           </form>
         </div>
       )}
